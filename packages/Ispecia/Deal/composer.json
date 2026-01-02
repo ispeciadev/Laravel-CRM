@@ -1,0 +1,13 @@
+{
+    "name": "ispecia/deal",
+    "description": "Deal module for Krayin CRM",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Ispecia\\Deal\\": "src/"
+        }
+    },
+    "require": {
+        "php": "^8.2"
+    }
+}

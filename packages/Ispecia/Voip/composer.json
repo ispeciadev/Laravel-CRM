@@ -1,0 +1,26 @@
+{
+    "name": "ispecia/voip",
+    "description": "VoIP Module for Krayin CRM",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ispecia",
+            "email": "contact@ispecia.com"
+        }
+    ],
+    "require": {
+        "twilio/sdk": "^7.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Ispecia\\Voip\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Ispecia\\Voip\\Providers\\VoipServiceProvider"
+            ]
+        }
+    }
+}

@@ -1,0 +1,114 @@
+{
+    "name": "ispecia/laravel-crm",
+    "type": "project",
+    "description": "Ispecia CRM",
+    "keywords": [
+        "framework",
+        "laravel"
+    ],
+    "license": "MIT",
+    "require": {
+        "php": "^8.2",
+        "barryvdh/laravel-dompdf": "^2.0.0",
+        "diglactic/laravel-breadcrumbs": "^8.0",
+        "doctrine/dbal": "^3.0",
+        "enshrined/svg-sanitize": "^0.21.0",
+        "guzzlehttp/guzzle": "^7.0.1",
+        "khaled.alshamaa/ar-php": "^6.3",
+        "konekt/concord": "^1.10",
+        "laravel/framework": "^10.0",
+        "laravel/sanctum": "^3.2",
+        "laravel/tinker": "^2.5",
+        "laravel/ui": "^4.5",
+        "maatwebsite/excel": "^3.1",
+        "mpdf/mpdf": "^8.2",
+        "prettus/l5-repository": "^2.7.9",
+        "smalot/pdfparser": "^2.11",
+        "twilio/sdk": "^7.0",
+        "webklex/laravel-imap": "^5.3"
+    },
+    "require-dev": {
+        "barryvdh/laravel-debugbar": "^3.6",
+        "fakerphp/faker": "^1.9.1",
+        "laravel/pint": "^1.16",
+        "laravel/sail": "^1.0.1",
+        "mockery/mockery": "^1.4.2",
+        "nunomaduro/collision": "^7.0",
+        "pestphp/pest": "^2.6",
+        "pestphp/pest-plugin-laravel": "^2.1",
+        "phpunit/phpunit": "^10.0",
+        "spatie/laravel-ignition": "^2.0"
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        },
+        "audit": {
+            "block-insecure": false
+        }
+    },
+    "extra": {
+        "laravel": {
+            "dont-discover": []
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/",
+            "Database\\Factories\\": "database/factories/",
+            "Database\\Seeders\\": "database/seeders/",
+            "Ispecia\\Activity\\": "packages/Ispecia/Activity/src",
+            "Ispecia\\Admin\\": "packages/Ispecia/Admin/src",
+            "Ispecia\\Attribute\\": "packages/Ispecia/Attribute/src",
+            "Ispecia\\Contact\\": "packages/Ispecia/Contact/src",
+            "Ispecia\\Core\\": "packages/Ispecia/Core/src",
+            "Ispecia\\DataGrid\\": "packages/Ispecia/DataGrid/src",
+            "Ispecia\\DataTransfer\\": "packages/Ispecia/DataTransfer/src",
+            "Ispecia\\Deal\\": "packages/Ispecia/Deal/src",
+            "Ispecia\\Email\\": "packages/Ispecia/Email/src",
+            "Ispecia\\EmailTemplate\\": "packages/Ispecia/EmailTemplate/src",
+            "Ispecia\\Marketing\\": "packages/Ispecia/Marketing/src",
+            "Ispecia\\Installer\\": "packages/Ispecia/Installer/src",
+            "Ispecia\\Lead\\": "packages/Ispecia/Lead/src",
+            "Ispecia\\Product\\": "packages/Ispecia/Product/src",
+            "Ispecia\\Quote\\": "packages/Ispecia/Quote/src",
+            "Ispecia\\Tag\\": "packages/Ispecia/Tag/src",
+            "Ispecia\\User\\": "packages/Ispecia/User/src",
+            "Ispecia\\Warehouse\\": "packages/Ispecia/Warehouse/src",
+            "Ispecia\\WebForm\\": "packages/Ispecia/WebForm/src",
+            "Ispecia\\Automation\\": "packages/Ispecia/Automation/src",
+            "Ispecia\\Voip\\": "packages/Ispecia/Voip/src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "packages/*/*",
+            "options": {
+                "symlink": true
+            }
+        }
+    ],
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "scripts": {
+        "post-autoload-dump": [
+            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+            "@php artisan package:discover --ansi"
+        ],
+        "post-root-package-install": [
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+        ],
+        "post-create-project-cmd": [
+            "@php artisan key:generate --ansi"
+        ]
+    }
+}
