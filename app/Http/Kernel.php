@@ -20,7 +20,7 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\PreventRequestsDuringMaintenance::class,
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \App\Http\Middleware\TrimStrings::class,
-        \Ispecia\Installer\Http\Middleware\CanInstall::class,
+        // \Ispecia\Installer\Http\Middleware\CanInstall::class, // Disabled - installation complete
         \App\Http\Middleware\ForceHttps::class,
         \App\Http\Middleware\SecurityHeaders::class,
     ];
