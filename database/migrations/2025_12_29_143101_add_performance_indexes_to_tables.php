@@ -18,7 +18,7 @@ return new class extends Migration
         if (Schema::hasTable('leads')) {
             Schema::table('leads', function (Blueprint $table) {
                 // Index for status filtering (very common query)
-                if (!$this->indexExists('leads', 'leads_status_index')) {
+                if (Schema::hasColumn('leads', 'status') && !$this->indexExists('leads', 'leads_status_index')) {
                     $table->index('status', 'leads_status_index');
                 }
                 
@@ -28,12 +28,12 @@ return new class extends Migration
                 }
                 
                 // Index for user assignment queries
-                if (!$this->indexExists('leads', 'leads_user_id_index')) {
+                if (Schema::hasColumn('leads', 'user_id') && !$this->indexExists('leads', 'leads_user_id_index')) {
                     $table->index('user_id', 'leads_user_id_index');
                 }
                 
                 // Composite index for common filtered queries
-                if (!$this->indexExists('leads', 'leads_status_user_id_index')) {
+                if (Schema::hasColumn('leads', 'status') && Schema::hasColumn('leads', 'user_id') && !$this->indexExists('leads', 'leads_status_user_id_index')) {
                     $table->index(['status', 'user_id'], 'leads_status_user_id_index');
                 }
             });
@@ -42,8 +42,8 @@ return new class extends Migration
         // Persons (contacts) table indexes
         if (Schema::hasTable('persons')) {
             Schema::table('persons', function (Blueprint $table) {
-                // Index for email lookups
-                if (!$this->indexExists('persons', 'persons_email_index')) {
+                // Index for email lookups (only if column exists - table uses 'emails' JSON instead)
+                if (Schema::hasColumn('persons', 'email') && !$this->indexExists('persons', 'persons_email_index')) {
                     $table->index('email', 'persons_email_index');
                 }
                 
@@ -62,8 +62,8 @@ return new class extends Migration
         // Activities table indexes
         if (Schema::hasTable('activities')) {
             Schema::table('activities', function (Blueprint $table) {
-                // Polymorphic relationship index
-                if (!$this->indexExists('activities', 'activities_entity_index')) {
+                // Polymorphic relationship index (only if columns exist)
+                if (Schema::hasColumn('activities', 'entity_type') && Schema::hasColumn('activities', 'entity_id') && !$this->indexExists('activities', 'activities_entity_index')) {
                     $table->index(['entity_type', 'entity_id'], 'activities_entity_index');
                 }
                 
@@ -73,13 +73,13 @@ return new class extends Migration
                 }
                 
                 // User assignment
-                if (!$this->indexExists('activities', 'activities_user_id_index')) {
+                if (Schema::hasColumn('activities', 'user_id') && !$this->indexExists('activities', 'activities_user_id_index')) {
                     $table->index('user_id', 'activities_user_id_index');
                 }
             });
         }
 
-        // Emails table indexes
+        // Emails table indexes (all columns checked)
         if (Schema::hasTable('emails')) {
             Schema::table('emails', function (Blueprint $table) {
                 // Scheduled emails query
@@ -108,7 +108,7 @@ return new class extends Migration
                 }
                 
                 // User assignment
-                if (!$this->indexExists('deals', 'deals_user_id_index')) {
+                if (Schema::hasColumn('deals', 'user_id') && !$this->indexExists('deals', 'deals_user_id_index')) {
                     $table->index('user_id', 'deals_user_id_index');
                 }
                 
@@ -128,7 +128,7 @@ return new class extends Migration
                 }
                 
                 // User assignment
-                if (!$this->indexExists('quotes', 'quotes_user_id_index')) {
+                if (Schema::hasColumn('quotes', 'user_id') && !$this->indexExists('quotes', 'quotes_user_id_index')) {
                     $table->index('user_id', 'quotes_user_id_index');
                 }
                 
@@ -148,7 +148,7 @@ return new class extends Migration
                 }
                 
                 // Name searches
-                if (!$this->indexExists('products', 'products_name_index')) {
+                if (Schema::hasColumn('products', 'name') && !$this->indexExists('products', 'products_name_index')) {
                     $table->index('name', 'products_name_index');
                 }
             });
@@ -183,16 +183,24 @@ return new class extends Migration
         // Drop all indexes created in up() method
         if (Schema::hasTable('leads')) {
             Schema::table('leads', function (Blueprint $table) {
-                $table->dropIndex('leads_status_index');
+                if (Schema::hasColumn('leads', 'status')) {
+                    $table->dropIndex('leads_status_index');
+                }
                 $table->dropIndex('leads_created_at_index');
-                $table->dropIndex('leads_user_id_index');
-                $table->dropIndex('leads_status_user_id_index');
+                if (Schema::hasColumn('leads', 'user_id')) {
+                    $table->dropIndex('leads_user_id_index');
+                }
+                if (Schema::hasColumn('leads', 'status') && Schema::hasColumn('leads', 'user_id')) {
+                    $table->dropIndex('leads_status_user_id_index');
+                }
             });
         }
 
         if (Schema::hasTable('persons')) {
             Schema::table('persons', function (Blueprint $table) {
-                $table->dropIndex('persons_email_index');
+                if (Schema::hasColumn('persons', 'email')) {
+                    $table->dropIndex('persons_email_index');
+                }
                 if (Schema::hasColumn('persons', 'phone')) {
                     $table->dropIndex('persons_phone_index');
                 }
@@ -204,9 +212,13 @@ return new class extends Migration
 
         if (Schema::hasTable('activities')) {
             Schema::table('activities', function (Blueprint $table) {
-                $table->dropIndex('activities_entity_index');
+                if (Schema::hasColumn('activities', 'entity_type') && Schema::hasColumn('activities', 'entity_id')) {
+                    $table->dropIndex('activities_entity_index');
+                }
                 $table->dropIndex('activities_created_at_index');
-                $table->dropIndex('activities_user_id_index');
+                if (Schema::hasColumn('activities', 'user_id')) {
+                    $table->dropIndex('activities_user_id_index');
+                }
             });
         }
 
@@ -229,7 +241,9 @@ return new class extends Migration
                 if (Schema::hasColumn('deals', 'stage_id')) {
                     $table->dropIndex('deals_stage_id_index');
                 }
-                $table->dropIndex('deals_user_id_index');
+                if (Schema::hasColumn('deals', 'user_id')) {
+                    $table->dropIndex('deals_user_id_index');
+                }
                 $table->dropIndex('deals_created_at_index');
             });
         }
@@ -239,7 +253,9 @@ return new class extends Migration
                 if (Schema::hasColumn('quotes', 'lead_id')) {
                     $table->dropIndex('quotes_lead_id_index');
                 }
-                $table->dropIndex('quotes_user_id_index');
+                if (Schema::hasColumn('quotes', 'user_id')) {
+                    $table->dropIndex('quotes_user_id_index');
+                }
                 if (Schema::hasColumn('quotes', 'status')) {
                     $table->dropIndex('quotes_status_index');
                 }
@@ -251,7 +267,9 @@ return new class extends Migration
                 if (Schema::hasColumn('products', 'sku')) {
                     $table->dropIndex('products_sku_index');
                 }
-                $table->dropIndex('products_name_index');
+                if (Schema::hasColumn('products', 'name')) {
+                    $table->dropIndex('products_name_index');
+                }
             });
         }
 
