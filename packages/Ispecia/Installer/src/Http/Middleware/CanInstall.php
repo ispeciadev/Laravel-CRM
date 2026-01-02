@@ -33,15 +33,20 @@ class CanInstall
      */
     public function isAlreadyInstalled(): bool
     {
-        if (file_exists(storage_path('installed'))) {
+        // Check database first (works on ephemeral filesystems like Railway)
+        if (app(DatabaseManager::class)->isInstalled()) {
+            // Try to create file marker if it doesn't exist
+            if (!file_exists(storage_path('installed'))) {
+                @touch(storage_path('installed'));
+            }
+            
+            Event::dispatch('krayin.installed');
+
             return true;
         }
 
-        if (app(DatabaseManager::class)->isInstalled()) {
-            touch(storage_path('installed'));
-
-            Event::dispatch('krayin.installed');
-
+        // Fallback to file check
+        if (file_exists(storage_path('installed'))) {
             return true;
         }
 
