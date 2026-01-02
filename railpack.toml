@@ -1,0 +1,2 @@
+[php]
+extensions = ["gd", "intl", "mbstring", "pdo_mysql", "openssl", "curl", "fileinfo", "tokenizer", "dom", "xml", "zip", "bcmath"]
