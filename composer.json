@@ -9,7 +9,6 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "barryvdh/laravel-dompdf": "^2.0.0",
         "diglactic/laravel-breadcrumbs": "^8.0",
         "doctrine/dbal": "^3.0",
         "enshrined/svg-sanitize": "^0.21.0",
@@ -21,9 +20,7 @@
         "laravel/tinker": "^2.5",
         "laravel/ui": "^4.5",
         "maatwebsite/excel": "^3.1",
-        "mpdf/mpdf": "^8.2",
         "prettus/l5-repository": "^2.7.9",
-        "smalot/pdfparser": "^2.11",
         "twilio/sdk": "^7.0",
         "webklex/laravel-imap": "^5.3"
     },
