@@ -184,7 +184,6 @@ return [
         /*
          * Package Service Providers...
          */
-        Barryvdh\DomPDF\ServiceProvider::class,
         Konekt\Concord\ConcordServiceProvider::class,
         Prettus\Repository\Providers\RepositoryServiceProvider::class,
 
